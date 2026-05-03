@@ -5,16 +5,31 @@ echo "[AutoRip] Installation des dépendances..."
 
 # Ajout du dépôt MakeMKV si nécessaire
 if ! command -v makemkvcon &> /dev/null; then
-    echo "[AutoRip] Installation de MakeMKV..."
-    apt-get install -y curl gnupg ca-certificates python3
-    KEY_FP=$(curl -fsSL "https://api.launchpad.net/1.0/~heyarje/+archive/makemkv-beta" \
-        | python3 -c "import sys,json; print(json.load(sys.stdin)['signing_key_fingerprint'])")
-    curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x${KEY_FP}" \
-        | gpg --dearmor -o /etc/apt/trusted.gpg.d/makemkv-beta.gpg
-    echo "deb https://ppa.launchpadcontent.net/heyarje/makemkv-beta/ubuntu jammy main" \
-        > /etc/apt/sources.list.d/makemkv-beta.list
-    apt-get update
-    apt-get install -y makemkv-bin makemkv-oss
+    echo "[AutoRip] Compilation de MakeMKV depuis les sources..."
+    apt-get install -y curl wget build-essential pkg-config libc6-dev libssl-dev \
+        libexpat1-dev libavcodec-dev libgl1-mesa-dev qtbase5-dev zlib1g-dev
+
+    MAKEMKV_VER=$(curl -fsSL "https://www.makemkv.com/forum/viewtopic.php?f=3&t=224" \
+        | grep -oP '(?<=MakeMKV v)[0-9.]+' | head -1) || true
+
+    if [ -n "$MAKEMKV_VER" ]; then
+        TMP_DIR=$(mktemp -d)
+        (
+            cd "$TMP_DIR"
+            wget -q "https://www.makemkv.com/download/makemkv-oss-${MAKEMKV_VER}.tar.gz"
+            wget -q "https://www.makemkv.com/download/makemkv-bin-${MAKEMKV_VER}.tar.gz"
+            tar -xf "makemkv-oss-${MAKEMKV_VER}.tar.gz"
+            cd "makemkv-oss-${MAKEMKV_VER}"
+            ./configure && make && make install
+            cd "$TMP_DIR"
+            tar -xf "makemkv-bin-${MAKEMKV_VER}.tar.gz"
+            cd "makemkv-bin-${MAKEMKV_VER}"
+            make && make install
+        ) || echo "[AutoRip] Avertissement : compilation de MakeMKV échouée" >&2
+        [ -n "$TMP_DIR" ] && rm -rf "$TMP_DIR"
+    else
+        echo "[AutoRip] Avertissement : version MakeMKV introuvable, installation ignorée" >&2
+    fi
 fi
 
 # Installation libdvdcss2

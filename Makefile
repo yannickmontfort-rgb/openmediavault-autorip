@@ -21,15 +21,11 @@ build:
 	@echo "Paquet créé : $(DEB)"
 
 deps:
-	@echo "Ajout du dépôt MakeMKV..."
-	apt-get install -y curl gnupg ca-certificates python3
-	KEY_FP=$$(curl -fsSL "https://api.launchpad.net/1.0/~heyarje/+archive/makemkv-beta" \
-		| python3 -c "import sys,json; print(json.load(sys.stdin)['signing_key_fingerprint'])") && \
-	curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x$$KEY_FP" \
-		| gpg --dearmor -o /etc/apt/trusted.gpg.d/makemkv-beta.gpg
-	echo "deb https://ppa.launchpadcontent.net/heyarje/makemkv-beta/ubuntu jammy main" \
-		> /etc/apt/sources.list.d/makemkv-beta.list
-	apt-get update -q
+	@echo "Installation des dépendances de base..."
+	apt-get install -y curl wget gnupg ca-certificates build-essential \
+		pkg-config libc6-dev libssl-dev libexpat1-dev \
+		libavcodec-dev libgl1-mesa-dev qtbase5-dev zlib1g-dev
+	apt-get update -q || echo "Avertissement : apt-get update a rencontré des erreurs (dépôts pré-existants ignorés)" >&2
 
 install: deps
 	@echo "Installation du plugin OMV AutoRip..."
