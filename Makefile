@@ -22,7 +22,7 @@ build:
 
 install:
 	@echo "Installation du plugin OMV AutoRip..."
-	dpkg -i $(DEB)
+	apt-get install -y ./$(DEB)
 	omv-salt deploy run omvextras || true
 	@echo "Installation terminée."
 
