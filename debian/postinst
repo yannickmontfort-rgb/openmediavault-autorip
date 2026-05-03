@@ -35,7 +35,7 @@ fi
 # Installation libdvdcss2
 if ! dpkg -l | grep -q libdvdcss2; then
     echo "[AutoRip] Installation de libdvdcss2..."
-    apt-get install -y libdvdcss2 || true
+    apt-get install -y --allow-unauthenticated libdvdcss2 || true
 fi
 
 # Activation des règles udev
