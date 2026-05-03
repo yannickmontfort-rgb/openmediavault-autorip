@@ -1,0 +1,11 @@
+Package: openmediavault-autorip
+Version: 1.0.0
+Section: admin
+Priority: optional
+Architecture: all
+Depends: openmediavault (>= 7.0), python3, python3-pyudev, makemkv-bin, libdvdcss2
+Maintainer: yannickmontfort-rgb
+Description: Plugin OpenMediaVault 7 - AutoRip DVD
+ Rip automatique de DVD en MKV dès l'insertion du disque.
+ Transfert automatique vers un dossier partagé OMV.
+ Décryptage CSS via libdvdcss2.

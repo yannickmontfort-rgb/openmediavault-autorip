@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+echo "[AutoRip] Désinstallation..."
+
+systemctl stop autorip.service || true
+systemctl disable autorip.service || true
+
+echo "[AutoRip] Désinstallation terminée."
+exit 0

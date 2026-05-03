@@ -1,0 +1,32 @@
+#!/bin/bash
+set -e
+
+echo "[AutoRip] Installation des dépendances..."
+
+# Ajout du dépôt MakeMKV si nécessaire
+if ! command -v makemkvcon &> /dev/null; then
+    echo "[AutoRip] Installation de MakeMKV..."
+    add-apt-repository ppa:heyarje/makemkv-beta -y || true
+    apt-get update
+    apt-get install -y makemkv-bin makemkv-oss
+fi
+
+# Installation libdvdcss2
+if ! dpkg -l | grep -q libdvdcss2; then
+    echo "[AutoRip] Installation de libdvdcss2..."
+    apt-get install -y libdvdcss2 || true
+fi
+
+# Activation des règles udev
+udevadm control --reload-rules
+udevadm trigger
+
+# Activation du démon
+systemctl daemon-reload
+systemctl enable autorip.service || true
+
+# Création du dossier temporaire
+mkdir -p /tmp/autorip
+
+echo "[AutoRip] Installation terminée !"
+exit 0
