@@ -21,11 +21,9 @@ build:
 	@echo "Paquet créé : $(DEB)"
 
 deps:
-	@echo "Installation des dépendances de base..."
-	apt-get install -y curl wget gnupg ca-certificates build-essential \
-		pkg-config libc6-dev libssl-dev libexpat1-dev \
-		libavcodec-dev libgl1-mesa-dev qtbase5-dev zlib1g-dev
+	@echo "Installation des dépendances de construction du paquet..."
 	apt-get update -q || echo "Avertissement : apt-get update a rencontré des erreurs (dépôts pré-existants ignorés)" >&2
+	apt-get install -y dpkg-dev
 
 install: deps
 	@echo "Installation du plugin OMV AutoRip..."
