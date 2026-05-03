@@ -21,9 +21,14 @@ build:
 	@echo "Paquet créé : $(DEB)"
 
 deps:
-	@echo "Ajout du dépôt MakeMKV (PPA)..."
-	apt-get install -y software-properties-common
-	add-apt-repository ppa:heyarje/makemkv-beta -y
+	@echo "Ajout du dépôt MakeMKV..."
+	apt-get install -y curl gnupg ca-certificates python3
+	KEY_FP=$$(curl -fsSL "https://api.launchpad.net/1.0/~heyarje/+archive/makemkv-beta" \
+		| python3 -c "import sys,json; print(json.load(sys.stdin)['signing_key_fingerprint'])") && \
+	gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys "$$KEY_FP" && \
+	gpg --export "$$KEY_FP" > /etc/apt/trusted.gpg.d/makemkv-beta.gpg
+	echo "deb https://ppa.launchpadcontent.net/heyarje/makemkv-beta/ubuntu jammy main" \
+		> /etc/apt/sources.list.d/makemkv-beta.list
 	apt-get update -q
 
 install: deps
