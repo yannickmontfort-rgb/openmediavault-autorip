@@ -22,6 +22,7 @@ build:
 
 deps:
 	@echo "Ajout du dépôt MakeMKV (PPA)..."
+	apt-get install -y software-properties-common
 	add-apt-repository ppa:heyarje/makemkv-beta -y
 	apt-get update -q
 
