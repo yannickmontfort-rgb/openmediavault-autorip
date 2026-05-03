@@ -27,7 +27,7 @@ deps:
 
 install: deps
 	@echo "Installation du plugin OMV AutoRip..."
-	apt-get install -y --allow-unauthenticated ./$(DEB)
+	dpkg -i ./$(DEB) || apt-get install -f -y
 	omv-salt deploy run omvextras || true
 	@echo "Installation terminée."
 
