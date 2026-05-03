@@ -1,0 +1,8 @@
+version: "1.0"
+type: navigationItem
+data:
+  path: services/autorip
+  position: 50
+  text: AutoRip DVD
+  icon: mdi:disc
+  url: /services/autorip

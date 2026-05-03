@@ -1,0 +1,50 @@
+version: "1.0"
+type: component
+data:
+  name: omv-services-autorip-settings-form-page
+  type: formPage
+  config:
+    request:
+      service: AutoRip
+      get:
+        method: getSettings
+      post:
+        method: setSettings
+    fields:
+      - type: checkbox
+        name: enable
+        label: Activer AutoRip DVD
+        value: false
+      - type: select
+        name: device
+        label: Périphérique DVD
+        value: /dev/sr0
+        options:
+          - value: /dev/sr0
+            text: /dev/sr0
+          - value: /dev/sr1
+            text: /dev/sr1
+      - type: sharedFolderSelect
+        name: sharefolderref
+        label: Dossier partagé destination
+        hasEmptyOption: false
+      - type: textInput
+        name: tmp_dir
+        label: Dossier temporaire
+        value: /tmp/autorip
+      - type: numberInput
+        name: min_length
+        label: Durée minimale titre (secondes)
+        value: 1200
+        hint: "Défaut : 1200 secondes (20 min)"
+      - type: checkbox
+        name: eject_after
+        label: Éjecter le disque après rip
+        value: true
+      - type: checkbox
+        name: notify_email
+        label: Notification par email
+        value: false
+    buttons:
+      - template: submit
+      - template: cancel

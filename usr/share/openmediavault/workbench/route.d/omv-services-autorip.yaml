@@ -1,0 +1,12 @@
+version: "1.0"
+type: route
+data:
+  routes:
+    - url: /services/autorip
+      title: AutoRip DVD
+      editing: false
+      notificationTitle: Mise à jour configuration AutoRip
+      component: omv-services-autorip-settings-form-page
+    - url: /services/autorip/logs
+      title: Logs AutoRip
+      component: omv-services-autorip-logs-datatable-page

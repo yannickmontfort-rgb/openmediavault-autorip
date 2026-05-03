@@ -1,0 +1,12 @@
+version: "1.0"
+type: component
+data:
+  name: omv-services-autorip-logs-datatable-page
+  type: textPage
+  config:
+    request:
+      service: AutoRip
+      get:
+        method: getLogs
+    hasReloadButton: true
+    label: Logs AutoRip
