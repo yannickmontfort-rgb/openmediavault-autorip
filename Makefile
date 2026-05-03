@@ -4,7 +4,7 @@ ARCH = all
 DEB = $(PACKAGE_NAME)_$(PACKAGE_VERSION)_$(ARCH).deb
 STAGING = /tmp/$(PACKAGE_NAME)-staging
 
-.PHONY: build install clean
+.PHONY: build deps install clean
 
 build:
 	@echo "Construction du paquet Debian..."
@@ -20,7 +20,12 @@ build:
 	rm -rf $(STAGING)
 	@echo "Paquet créé : $(DEB)"
 
-install:
+deps:
+	@echo "Ajout du dépôt MakeMKV (PPA)..."
+	add-apt-repository ppa:heyarje/makemkv-beta -y
+	apt-get update -q
+
+install: deps
 	@echo "Installation du plugin OMV AutoRip..."
 	apt-get install -y ./$(DEB)
 	omv-salt deploy run omvextras || true
