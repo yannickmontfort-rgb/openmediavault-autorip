@@ -1,0 +1,9 @@
+srv/autorip/* /srv/autorip/
+etc/udev/rules.d/99-dvd-autorip.rules /etc/udev/rules.d/
+etc/openmediavault/autorip.conf /etc/openmediavault/
+etc/systemd/system/autorip.service /etc/systemd/system/
+usr/share/openmediavault/engined/module/autorip.inc /usr/share/openmediavault/engined/module/
+usr/share/openmediavault/engined/rpc/autorip.inc /usr/share/openmediavault/engined/rpc/
+usr/share/openmediavault/workbench/component.d/ /usr/share/openmediavault/workbench/component.d/
+usr/share/openmediavault/workbench/route.d/ /usr/share/openmediavault/workbench/route.d/
+usr/share/openmediavault/workbench/navigation.d/ /usr/share/openmediavault/workbench/navigation.d/

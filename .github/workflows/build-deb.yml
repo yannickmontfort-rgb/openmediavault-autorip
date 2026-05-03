@@ -1,0 +1,72 @@
+name: Build .deb Package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  release:
+    types: [created]
+
+jobs:
+  build:
+    name: Build Debian Package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout du code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Installation des outils Debian
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y dpkg-dev debhelper build-essential
+
+      - name: 🏗️ Build du paquet .deb
+        run: |
+          mkdir -p build_pkg/DEBIAN
+          cp debian/control build_pkg/DEBIAN/control
+          cp debian/postinst build_pkg/DEBIAN/postinst
+          cp debian/prerm build_pkg/DEBIAN/prerm
+          chmod 755 build_pkg/DEBIAN/postinst build_pkg/DEBIAN/prerm
+
+          # Copie des fichiers
+          mkdir -p build_pkg/srv/autorip
+          mkdir -p build_pkg/etc/udev/rules.d
+          mkdir -p build_pkg/etc/openmediavault
+          mkdir -p build_pkg/etc/systemd/system
+          mkdir -p build_pkg/usr/share/openmediavault/engined/module
+          mkdir -p build_pkg/usr/share/openmediavault/engined/rpc
+          mkdir -p build_pkg/usr/share/openmediavault/workbench/component.d
+          mkdir -p build_pkg/usr/share/openmediavault/workbench/route.d
+          mkdir -p build_pkg/usr/share/openmediavault/workbench/navigation.d
+
+          cp srv/autorip/*.py build_pkg/srv/autorip/
+          cp etc/udev/rules.d/99-dvd-autorip.rules build_pkg/etc/udev/rules.d/
+          cp etc/openmediavault/autorip.conf build_pkg/etc/openmediavault/
+          cp etc/systemd/system/autorip.service build_pkg/etc/systemd/system/
+          cp usr/share/openmediavault/engined/module/autorip.inc build_pkg/usr/share/openmediavault/engined/module/
+          cp usr/share/openmediavault/engined/rpc/autorip.inc build_pkg/usr/share/openmediavault/engined/rpc/
+          cp usr/share/openmediavault/workbench/component.d/*.yaml build_pkg/usr/share/openmediavault/workbench/component.d/
+          cp usr/share/openmediavault/workbench/route.d/*.yaml build_pkg/usr/share/openmediavault/workbench/route.d/
+          cp usr/share/openmediavault/workbench/navigation.d/*.yaml build_pkg/usr/share/openmediavault/workbench/navigation.d/
+
+          dpkg-deb --build build_pkg openmediavault-autorip_1.0.0_all.deb
+
+      - name: ✅ Vérification du paquet
+        run: dpkg-deb --info openmediavault-autorip_1.0.0_all.deb
+
+      - name: 📦 Upload de l'artefact .deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: openmediavault-autorip-deb
+          path: openmediavault-autorip_1.0.0_all.deb
+          retention-days: 30
+
+      - name: 🚀 Publication Release (si tag)
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: openmediavault-autorip_1.0.0_all.deb

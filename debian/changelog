@@ -1,0 +1,12 @@
+openmediavault-autorip (1.0.0) stable; urgency=medium
+
+  * Version initiale du plugin OMV 7 AutoRip DVD
+  * Détection automatique DVD via udev
+  * Rip MKV via MakeMKV
+  * Décryptage CSS via libdvdcss2 (clés VideoLAN automatiques)
+  * Transfert automatique vers dossier partagé OMV
+  * Interface Web OMV 7 (ExtJS / YAML workbench)
+  * Service systemd autorip.service
+  * RPC PHP OMV 7 (getSettings, setSettings, getLogs)
+
+ -- Yannick MONTFORT <yannick.montfort@gmail.com>  Sun, 03 May 2026 22:00:00 +0200
