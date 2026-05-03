@@ -30,13 +30,17 @@ class AutoRip extends \OMV\Rpc\ServiceAbstract
         $config = json_decode(file_get_contents($configFile), true);
 
         return [
-            'enable'       => (bool)$config['enable'],
-            'device'       => $config['device'],
-            'sharefolderref' => $config['share_path'],
-            'tmp_dir'      => $config['tmp_dir'],
-            'min_length'   => (int)$config['min_length'],
-            'eject_after'  => (bool)$config['eject_after'],
-            'notify_email' => (bool)$config['notify_email'],
+            'enable'             => (bool)$config['enable'],
+            'device'             => $config['device'],
+            'sharefolderref'     => $config['share_path'],
+            'tmp_dir'            => $config['tmp_dir'],
+            'min_length'         => (int)$config['min_length'],
+            'eject_after'        => (bool)$config['eject_after'],
+            'notify_email'       => (bool)$config['notify_email'],
+            'audio_languages'    => $config['audio_languages'] ?? ['fra', 'eng'],
+            'subtitle_languages' => $config['subtitle_languages'] ?? ['fra', 'eng'],
+            'keep_all_audio'     => (bool)($config['keep_all_audio'] ?? false),
+            'keep_all_subtitles' => (bool)($config['keep_all_subtitles'] ?? false),
         ];
     }
 
@@ -51,13 +55,17 @@ class AutoRip extends \OMV\Rpc\ServiceAbstract
         $this->validateMethodParams($params, 'rpc.autorip.setsettings');
 
         $config = [
-            'enable'       => (bool)$params['enable'],
-            'device'       => $params['device'],
-            'share_path'   => $params['sharefolderref'],
-            'tmp_dir'      => $params['tmp_dir'],
-            'min_length'   => (int)$params['min_length'],
-            'eject_after'  => (bool)$params['eject_after'],
-            'notify_email' => (bool)$params['notify_email'],
+            'enable'             => (bool)$params['enable'],
+            'device'             => $params['device'],
+            'share_path'         => $params['sharefolderref'],
+            'tmp_dir'            => $params['tmp_dir'],
+            'min_length'         => (int)$params['min_length'],
+            'eject_after'        => (bool)$params['eject_after'],
+            'notify_email'       => (bool)$params['notify_email'],
+            'audio_languages'    => $params['audio_languages'] ?? ['fra', 'eng'],
+            'subtitle_languages' => $params['subtitle_languages'] ?? ['fra', 'eng'],
+            'keep_all_audio'     => (bool)($params['keep_all_audio'] ?? false),
+            'keep_all_subtitles' => (bool)($params['keep_all_subtitles'] ?? false),
         ];
 
         file_put_contents(

@@ -7,8 +7,9 @@ Détecte l'insertion d'un DVD et lance le rip automatique.
 import argparse
 import logging
 import os
+import json
 
-from ripper import rip_dvd
+from ripper import rip_dvd, filter_languages
 from mover import move_to_share
 from key_fetcher import check_libdvdcss
 
@@ -25,7 +26,6 @@ logging.basicConfig(
 )
 
 def load_config():
-    import json
     with open(CONFIG_FILE) as f:
         return json.load(f)
 
@@ -36,9 +36,13 @@ def main(device: str):
         logging.info("AutoRip désactivé dans la configuration.")
         return
 
-    tmp_dir = config.get("tmp_dir", "/tmp/autorip")
-    share = config.get("share_path", "")
-    eject = config.get("eject_after", True)
+    tmp_dir            = config.get("tmp_dir", "/tmp/autorip")
+    share              = config.get("share_path", "")
+    eject              = config.get("eject_after", True)
+    audio_langs        = config.get("audio_languages", ["fra", "eng"])
+    subtitle_langs     = config.get("subtitle_languages", ["fra", "eng"])
+    keep_all_audio     = config.get("keep_all_audio", False)
+    keep_all_subtitles = config.get("keep_all_subtitles", False)
 
     if not share:
         logging.error("Aucun dossier partagé configuré !")
@@ -51,6 +55,9 @@ def main(device: str):
 
     logging.info("Début du rip...")
     rip_dvd(device, tmp_dir, config.get("min_length", 1200))
+
+    logging.info("Filtrage des langues audio et sous-titres...")
+    filter_languages(tmp_dir, audio_langs, subtitle_langs, keep_all_audio, keep_all_subtitles)
 
     logging.info("Transfert vers le dossier partagé...")
     move_to_share(tmp_dir, share)

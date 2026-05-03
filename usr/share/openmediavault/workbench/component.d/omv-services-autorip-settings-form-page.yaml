@@ -15,6 +15,7 @@ data:
         name: enable
         label: Activer AutoRip DVD
         value: false
+
       - type: select
         name: device
         label: Périphérique DVD
@@ -24,27 +25,116 @@ data:
             text: /dev/sr0
           - value: /dev/sr1
             text: /dev/sr1
+
       - type: sharedFolderSelect
         name: sharefolderref
         label: Dossier partagé destination
         hasEmptyOption: false
+
       - type: textInput
         name: tmp_dir
         label: Dossier temporaire
         value: /tmp/autorip
+
       - type: numberInput
         name: min_length
         label: Durée minimale titre (secondes)
         value: 1200
         hint: "Défaut : 1200 secondes (20 min)"
+
+      - type: divider
+        title: Langues Audio
+
+      - type: checkbox
+        name: keep_all_audio
+        label: Conserver toutes les pistes audio
+        value: false
+
+      - type: select
+        name: audio_languages
+        label: Langues audio à conserver
+        multiple: true
+        hint: "Sélectionnez une ou plusieurs langues (codes ISO 639-2)"
+        modifiers:
+          - type: disabled
+            operator: truthy
+            arg0:
+              prop: keep_all_audio
+        options:
+          - value: fra
+            text: Français
+          - value: eng
+            text: Anglais
+          - value: deu
+            text: Allemand
+          - value: spa
+            text: Espagnol
+          - value: ita
+            text: Italien
+          - value: por
+            text: Portugais
+          - value: jpn
+            text: Japonais
+          - value: zho
+            text: Chinois
+          - value: ara
+            text: Arabe
+          - value: rus
+            text: Russe
+
+      - type: divider
+        title: Sous-titres
+
+      - type: checkbox
+        name: keep_all_subtitles
+        label: Conserver tous les sous-titres
+        value: false
+
+      - type: select
+        name: subtitle_languages
+        label: Langues sous-titres à conserver
+        multiple: true
+        hint: "Sélectionnez une ou plusieurs langues (codes ISO 639-2)"
+        modifiers:
+          - type: disabled
+            operator: truthy
+            arg0:
+              prop: keep_all_subtitles
+        options:
+          - value: fra
+            text: Français
+          - value: eng
+            text: Anglais
+          - value: deu
+            text: Allemand
+          - value: spa
+            text: Espagnol
+          - value: ita
+            text: Italien
+          - value: por
+            text: Portugais
+          - value: jpn
+            text: Japonais
+          - value: zho
+            text: Chinois
+          - value: ara
+            text: Arabe
+          - value: rus
+            text: Russe
+
+      - type: divider
+        title: Options
+
       - type: checkbox
         name: eject_after
         label: Éjecter le disque après rip
         value: true
+
       - type: checkbox
         name: notify_email
         label: Notification par email
         value: false
+
     buttons:
       - template: submit
       - template: cancel
