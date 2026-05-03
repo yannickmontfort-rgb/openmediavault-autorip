@@ -10,6 +10,7 @@ import os
 import json
 
 from ripper import rip_dvd, filter_languages
+from encoder import encode_mkv
 from mover import move_to_share
 from key_fetcher import check_libdvdcss
 
@@ -43,6 +44,10 @@ def main(device: str):
     subtitle_langs     = config.get("subtitle_languages", ["fra", "eng"])
     keep_all_audio     = config.get("keep_all_audio", False)
     keep_all_subtitles = config.get("keep_all_subtitles", False)
+    encode_enabled     = config.get("encode_enabled", False)
+    encode_codec       = config.get("encode_codec", "x264")
+    encode_quality     = config.get("encode_quality", 22)
+    encode_preset      = config.get("encode_preset", "medium")
 
     if not share:
         logging.error("Aucun dossier partagé configuré !")
@@ -58,6 +63,10 @@ def main(device: str):
 
     logging.info("Filtrage des langues audio et sous-titres...")
     filter_languages(tmp_dir, audio_langs, subtitle_langs, keep_all_audio, keep_all_subtitles)
+
+    if encode_enabled:
+        logging.info(f"Compression {encode_codec.upper()} en cours...")
+        encode_mkv(tmp_dir, encode_codec, encode_quality, encode_preset, encode_enabled)
 
     logging.info("Transfert vers le dossier partagé...")
     move_to_share(tmp_dir, share)

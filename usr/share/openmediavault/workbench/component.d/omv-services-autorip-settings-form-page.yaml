@@ -54,7 +54,7 @@ data:
         name: audio_languages
         label: Langues audio à conserver
         multiple: true
-        hint: "Sélectionnez une ou plusieurs langues (codes ISO 639-2)"
+        hint: "Codes ISO 639-2"
         modifiers:
           - type: disabled
             operator: truthy
@@ -94,7 +94,7 @@ data:
         name: subtitle_languages
         label: Langues sous-titres à conserver
         multiple: true
-        hint: "Sélectionnez une ou plusieurs langues (codes ISO 639-2)"
+        hint: "Codes ISO 639-2"
         modifiers:
           - type: disabled
             operator: truthy
@@ -121,6 +121,62 @@ data:
             text: Arabe
           - value: rus
             text: Russe
+
+      - type: divider
+        title: Compression vidéo (HandBrake)
+
+      - type: checkbox
+        name: encode_enabled
+        label: Activer la compression vidéo
+        value: false
+        hint: "Compresse le MKV après le rip (plus lent mais fichier plus petit)"
+
+      - type: select
+        name: encode_codec
+        label: Codec vidéo
+        value: x264
+        modifiers:
+          - type: disabled
+            operator: falsy
+            arg0:
+              prop: encode_enabled
+        options:
+          - value: x264
+            text: H.264 (x264) - Compatible universel
+          - value: x265
+            text: H.265 (x265) - Meilleure compression
+
+      - type: numberInput
+        name: encode_quality
+        label: Qualité RF (0=meilleure, 51=pire)
+        value: 22
+        hint: "Recommandé : 18-28. Plus bas = meilleure qualité, fichier plus grand."
+        modifiers:
+          - type: disabled
+            operator: falsy
+            arg0:
+              prop: encode_enabled
+
+      - type: select
+        name: encode_preset
+        label: Vitesse d'encodage
+        value: medium
+        modifiers:
+          - type: disabled
+            operator: falsy
+            arg0:
+              prop: encode_enabled
+        options:
+          - value: ultrafast
+            text: Ultra Rapide (qualité moindre)
+          - value: fast
+            text: Rapide
+          - value: medium
+            text: Moyen (recommandé)
+          - value: slow
+            text: Lent (meilleure qualité)
+          - value: veryslow
+            text: Très Lent (qualité maximale)
 
       - type: divider
         title: Options
