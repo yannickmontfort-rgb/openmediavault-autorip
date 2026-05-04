@@ -17,13 +17,13 @@ class AutoRip extends \OMV\Engine\Module\ServiceAbstract
         return 'autorip';
     }
 
-    public function deployAfter(): array {
+    public function deployAfter() {
         return ['fstab'];
     }
 
-    public function bindListeners(\OMV\Engine\Notify\Dispatcher $dispatcher) {
+    public function bindListeners($dispatcher) {
         $dispatcher->addListener(
-            OMV_NOTIFY_MODIFY,
+            \OMV_NOTIFY_MODIFY,
             'org.openmediavault.conf.service.autorip',
             [$this, 'setDirty']
         );

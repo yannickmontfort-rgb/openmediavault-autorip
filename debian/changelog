@@ -1,3 +1,28 @@
+openmediavault-autorip (1.0.3) stable; urgency=high
+
+  * Fix possible OMV fatal error by aligning module method signatures
+    with base class/interface expectations (remove strict type hints)
+  * Update install deploy step to run nginx deployment instead of omvextras
+
+ -- Yannick MONTFORT <yannick.montfort@gmail.com>  Mon, 04 May 2026 11:20:00 +0200
+
+openmediavault-autorip (1.0.2) stable; urgency=high
+
+  * Add strict server-side validation for RPC setSettings parameters
+    - Validate booleans, integers, language codes, and enum choices
+    - Validate DVD device format (/dev/srN) and absolute tmp_dir path
+    - Fail safely if configuration file cannot be written
+
+ -- Yannick MONTFORT <yannick.montfort@gmail.com>  Mon, 04 May 2026 10:50:00 +0200
+
+openmediavault-autorip (1.0.1) stable; urgency=high
+
+  * Fix crash OMV on plugin load caused by namespaced constants in PHP
+    - Use global constants \OMV_ROLE_ADMINISTRATOR and \OMV_NOTIFY_MODIFY
+  * Harden RPC config loading when autorip.conf is missing/invalid
+
+ -- Yannick MONTFORT <yannick.montfort@gmail.com>  Mon, 04 May 2026 10:30:00 +0200
+
 openmediavault-autorip (1.0.0) stable; urgency=medium
 
   * Version initiale du plugin OMV 7 AutoRip DVD
