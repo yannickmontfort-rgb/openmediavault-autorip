@@ -6,5 +6,10 @@ echo "[AutoRip] Désinstallation..."
 systemctl stop autorip.service || true
 systemctl disable autorip.service || true
 
+# Rechargement de l'interface OMV pour retirer le menu Services → AutoRip DVD
+omv-confdbadm populate || true
+omv-salt deploy run nginx || true
+systemctl restart openmediavault-engined || true
+
 echo "[AutoRip] Désinstallation terminée."
 exit 0

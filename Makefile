@@ -4,7 +4,7 @@ ARCH = all
 DEB = $(PACKAGE_NAME)_$(PACKAGE_VERSION)_$(ARCH).deb
 STAGING = /tmp/$(PACKAGE_NAME)-staging
 
-.PHONY: build deps install clean
+.PHONY: build deps install uninstall clean
 
 build:
 	@echo "Construction du paquet Debian..."
@@ -62,6 +62,13 @@ install: deps
 	omv-salt deploy run nginx || true
 	systemctl restart openmediavault-engined || true
 	@echo "Installation terminée."
+
+uninstall:
+	@echo "Désinstallation du plugin OMV AutoRip..."
+	dpkg -r $(PACKAGE_NAME) || true
+	omv-salt deploy run nginx || true
+	systemctl restart openmediavault-engined || true
+	@echo "Désinstallation terminée."
 
 clean:
 	rm -f $(DEB)
