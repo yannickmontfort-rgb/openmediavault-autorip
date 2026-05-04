@@ -59,7 +59,8 @@ deps:
 install: deps
 	@echo "Installation du plugin OMV AutoRip..."
 	dpkg -i ./$(DEB) || apt-get install -f -y
-	omv-salt deploy run workbench || true
+	omv-salt deploy run nginx || true
+	systemctl restart openmediavault-engined || true
 	@echo "Installation terminée."
 
 clean:
