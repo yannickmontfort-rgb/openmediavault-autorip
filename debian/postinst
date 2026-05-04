@@ -14,5 +14,9 @@ systemctl enable autorip.service || true
 # Création du dossier temporaire
 mkdir -p /tmp/autorip
 
+# Rechargement du workbench OMV pour enregistrer le menu Services → AutoRip DVD
+omv-confdbadm populate || true
+omv-salt deploy run workbench || true
+
 echo "[AutoRip] Configuration terminée !"
 exit 0
